@@ -4,14 +4,15 @@ kind: Application
 metadata:
   name: linkerd-app
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/manifest-generate-paths: .argo/cert-manager/*
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   destination:
     server: https://argocd.example.com 
     namespace: default 
   project: default 
   source:
-    repoURL: https://github.com/devoteamgcloud/dgc-dk-gitops-frontend 
+    repoURL: https://github.com/cbrandborg/dummy-argocd
     targetRevision: main 
     path: ./argo/linkerd
     helm:

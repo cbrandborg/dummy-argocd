@@ -3,13 +3,13 @@ kind: Application
 metadata:
   name: pre-req-crds-linkerd-app
   annotations:
-    argocd.argoproj.io/manifest-generate-paths: /1-infrastructure/CRDs/helm/pre-req-CRDs-linkerd/*
+    argocd.argoproj.io/manifest-generate-paths: ./argo/pre-req-crds-linkerd
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
   source:
-    repoURL: https://github.com/devoteamgcloud/dgc-dk-gitops-frontend
-    targetRevision: HEAD
+    repoURL: https://github.com/cbrandborg/dummy-argocd
+    targetRevision: main
     path: ./argo/pre-req-crds-linkerd
   destination:
     server: in-cluster
