@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   destination:
-    server: in-cluster
+    name: in-cluster
     namespace: default
   source:
     repoURL: https://github.com/cbrandborg/dummy-argocd

@@ -9,7 +9,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "-5"
 spec:
   destination:
-    server: in-cluster 
+    name: in-cluster 
     namespace: default 
   project: default 
   source:

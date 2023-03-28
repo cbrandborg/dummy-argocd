@@ -1,6 +1,5 @@
-# Deploying applicationSet for cert-manager to be deployed in all clusters (mgmt, staging, prod)
 apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
+kind: Application
 metadata:
   name: cert-manager
   namespace: argocd
@@ -9,16 +8,15 @@ metadata:
     argocd.argoproj.io/sync-wave: "-4"
 spec:
   project: default
+  destination:
+    name: in-cluster
+    namespace: cert-manager
   source:
     repoURL: 'https://github.com/cbrandborg/dummy-argocd'
     targetRevision: main
     path: .argo/cert-manager/*
     helm:
       releaseName: cert-manager        
-
-  destination:
-    server: in-cluster
-    namespace: cert-manager
   syncPolicy:
     automated: {}
     syncOptions:
