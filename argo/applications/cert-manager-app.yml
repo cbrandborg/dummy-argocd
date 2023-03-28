@@ -3,6 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cert-manager
+  namespace: argocd
   annotations:
     argocd.argoproj.io/manifest-generate-paths: .argo/cert-manager/*
     argocd.argoproj.io/sync-wave: "-4"
