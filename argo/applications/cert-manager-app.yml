@@ -7,26 +7,19 @@ metadata:
   annotations:
     argocd.argoproj.io/manifest-generate-paths: .argo/cert-manager/*
     argocd.argoproj.io/sync-wave: "-4"
-spec:
-  generators:
-  - clusters: {} # Automatically use all clusters defined within Argo CD
+  spec:
+    project: default
+    source:
+      repoURL: 'https://github.com/cbrandborg/dummy-argocd'
+      targetRevision: main
+      path: .argo/cert-manager/*
+      helm:
+        releaseName: cert-manager        
 
-  template:
-    metadata:
-      name: "{{`cert-manager-{{name}}`}}"
-    spec:
-      project: default
-      source:
-        repoURL: 'https://github.com/cbrandborg/dummy-argocd'
-        targetRevision: main
-        path: "{{`1-infrastructure/CRDs/helm/cert-manager/{{name}}`}}"
-        helm:
-          releaseName: cert-manager        
-
-      destination:
-        server: "{{`{{server}}`}}"
-        namespace: cert-manager
-      syncPolicy:
-        automated: {}
-        syncOptions:
-          - CreateNamespace=true
+    destination:
+      server: in-cluster
+      namespace: cert-manager
+    syncPolicy:
+      automated: {}
+      syncOptions:
+        - CreateNamespace=true
