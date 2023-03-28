@@ -8,12 +8,12 @@ metadata:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
+  destination:
+    server: in-cluster
+    namespace: default
   source:
     repoURL: https://github.com/cbrandborg/dummy-argocd
     targetRevision: main
-    path: ./argo/pre-req-crds-linkerd
-  destination:
-    server: in-cluster
-    namespace: linkerd
+    path: ./argo/pre-req-crds-linkerd/*
   syncPolicy:
     automated: {}
