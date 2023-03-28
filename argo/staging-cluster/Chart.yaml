@@ -1,0 +1,8 @@
+apiVersion: v2
+description: Proxy-chart for cert-manager
+name: cert-manager-proxy
+version: 1.0.0
+dependencies:
+  - name: cert-manager
+    version: v1.8.2
+    repository: https://charts.jetstack.io

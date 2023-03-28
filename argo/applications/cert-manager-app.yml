@@ -1,0 +1,31 @@
+# Deploying applicationSet for cert-manager to be deployed in all clusters (mgmt, staging, prod)
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cert-manager
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: /1-infrastructure/CRDs/helm/cert-manager/*
+    argocd.argoproj.io/sync-wave: "-4"
+spec:
+  generators:
+  - clusters: {} # Automatically use all clusters defined within Argo CD
+
+  template:
+    metadata:
+      name: "{{`cert-manager-{{name}}`}}"
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/cellpointdigital/cp-infra/'
+        targetRevision: main
+        path: "{{`1-infrastructure/CRDs/helm/cert-manager/{{name}}`}}"
+        helm:
+          releaseName: cert-manager        
+
+      destination:
+        server: "{{`{{server}}`}}"
+        namespace: cert-manager
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true

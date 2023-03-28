@@ -1,1 +1,1 @@
-# dummy-argocd
+# GitOps Demo

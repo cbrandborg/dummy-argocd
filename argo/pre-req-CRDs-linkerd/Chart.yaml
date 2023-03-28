@@ -1,0 +1,7 @@
+apiVersion: v2
+name: prereq-crd-linkerd
+version: 1.0.0
+dependencies:
+  - name: cert-manager-trust
+    version: v0.2.0
+    repository: https://charts.jetstack.io

@@ -1,0 +1,79 @@
+cert-manager:
+  installCRDs: true
+  ingressShim:
+    defaultIssuerName: letsencrypt-mgmt
+    defaultIssuerKind: ClusterIssuer
+    defaultIssuerGroup: cert-manager.io
+  serviceAccount:
+    annotations:
+      iam.gke.io/gcp-service-account: "k8s-external-dns@prj-cp-mgmt-compute.iam.gserviceaccount.com"
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+  containerSecurityContext:
+    capabilities:
+      drop:
+        - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+
+  webhook:
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+
+    containerSecurityContext:
+      capabilities:
+        drop:
+          - ALL
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1001
+
+  startupapicheck:
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+
+    containerSecurityContext:
+      capabilities:
+        drop:
+          - ALL
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: false
+
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1001
+
+  cainjector:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+
+    containerSecurityContext:
+      capabilities:
+        drop:
+          - ALL
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1001
+  fullnameOverride: cert-manager

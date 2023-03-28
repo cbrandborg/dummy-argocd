@@ -1,0 +1,21 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: linkerd-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  destination:
+    server: https://argocd.example.com 
+    namespace: default 
+  project: default 
+  source:
+    repoURL: https://github.com/devoteamgcloud/dgc-dk-gitops-frontend 
+    targetRevision: main 
+    path: ./argo/linkerd
+    helm:
+      releaseName: linkerd
+  syncPolicy:
+    automated:
+      prune: true 

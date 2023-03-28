@@ -1,0 +1,177 @@
+#####################################################
+## APP OF APPS FOR DEPLOYING 1-INFRASTRUCTURE/CRDs ##
+#####################################################
+
+# Deploying applicationSet for cert-manager to be deployed in all clusters (mgmt, staging, prod)
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cert-manager
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: /1-infrastructure/CRDs/helm/cert-manager/*
+    argocd.argoproj.io/sync-wave: "-4"
+spec:
+  generators:
+  - clusters: {} # Automatically use all clusters defined within Argo CD
+
+  template:
+    metadata:
+      name: "{{`cert-manager-{{name}}`}}"
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/cellpointdigital/cp-infra/'
+        targetRevision: main
+        path: "{{`1-infrastructure/CRDs/helm/cert-manager/{{name}}`}}"
+        helm:
+          releaseName: cert-manager        
+
+      destination:
+        server: "{{`{{server}}`}}"
+        namespace: cert-manager
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+
+---
+# Deploying applicationSet for external-secrets to be deployed in all clusters (mgmt, staging, prod)
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: external-secrets
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: /1-infrastructure/CRDs/helm/external-secrets/*
+    argocd.argoproj.io/sync-wave: "-4"
+spec:
+  generators:
+  - clusters: {} # Automatically use all clusters defined within Argo CD
+
+  template:
+    metadata:
+      name: "{{`external-secrets-{{name}}`}}"
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/cellpointdigital/cp-infra/'
+        targetRevision: main
+        path: "{{`1-infrastructure/CRDs/helm/external-secrets/{{name}}`}}"
+        helm:
+          releaseName: external-secrets 
+
+      destination:
+        server: "{{`{{server}}`}}"
+        namespace: external-secrets
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+
+
+---
+
+# Deploying applicationSet for pre-req-crds to be deployed in all clusters (mgmt, staging, prod)
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: pre-req-crds-cert-manager
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: /1-infrastructure/CRDs/helm/pre-req-CRDs-cert-manager/*
+    argocd.argoproj.io/sync-wave: "-3"
+spec:
+  generators:
+  - clusters: {} # Automatically use all clusters defined within Argo CD
+
+  template:
+    metadata:
+      name: "{{`pre-req-crds-cert-manager-{{name}}`}}"
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/cellpointdigital/cp-infra/'
+        targetRevision: main
+        path: "{{`1-infrastructure/CRDs/helm/pre-req-CRDs-cert-manager/{{name}}`}}"
+        helm:
+          releaseName: prereq-crds-cert-manager
+
+      destination:
+        server: "{{`{{server}}`}}"
+        namespace: cert-manager
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+
+---
+# Deploying applicationSet for pre-req-crds to be deployed in all clusters (mgmt, staging, prod)
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: pre-req-crds-linkerd
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: /1-infrastructure/CRDs/helm/pre-req-CRDs-linkerd/*
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  generators:
+  - clusters:  # Automatically use all clusters defined within Argo CD
+      selector:
+        matchLabels:
+          mgmt: "false"
+
+  template:
+    metadata:
+      name: "{{`pre-req-crds-linkerd-{{name}}`}}"
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/cellpointdigital/cp-infra/'
+        targetRevision: main
+        path: "{{`1-infrastructure/CRDs/helm/pre-req-CRDs-linkerd/{{name}}`}}"
+        helm:
+          releaseName: prereq-crds-linkerd
+
+      destination:
+        server: "{{`{{server}}`}}"
+        namespace: cert-manager
+      syncPolicy:
+        automated: {}
+
+---
+
+# Deploying applicationSet for pre-req-crds to be deployed in all clusters (mgmt, staging, prod)
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: pre-req-crds-secret-manager
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: /1-infrastructure/CRDs/helm/pre-req-CRDs-secret-manager/*
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  generators:
+  - clusters: {} # Automatically use all clusters defined within Argo CD
+
+  template:
+    metadata:
+      name: "{{`pre-req-crds-secret-manager-{{name}}`}}"
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/cellpointdigital/cp-infra/'
+        targetRevision: main
+        path: "{{`1-infrastructure/CRDs/helm/pre-req-CRDs-secret-manager/{{name}}`}}"
+        helm:
+          releaseName: prereq-crds-secret-manager
+
+      destination:
+        server: "{{`{{server}}`}}"
+        namespace: external-secrets
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+
+---
